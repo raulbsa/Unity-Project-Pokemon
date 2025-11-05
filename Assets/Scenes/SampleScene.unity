@@ -744,8 +744,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -378, y: -43}
-  m_SizeDelta: {x: 700, y: 500}
+  m_AnchoredPosition: {x: -340.5631, y: -85.600586}
+  m_SizeDelta: {x: 774.8738, y: 585.2012}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &691002892
 MonoBehaviour:
@@ -1308,6 +1308,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd95fb01ccf7bd242bedf4907f65733b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PainelDoPlayer
+  nome: 
+  tipo: 
+  spritePlayer: 
+  nomeDoPlayer: {fileID: 1027595179}
+  spriteDoPlayer: {fileID: 691002892}
 --- !u!1 &1027595177
 GameObject:
   m_ObjectHideFlags: 0
