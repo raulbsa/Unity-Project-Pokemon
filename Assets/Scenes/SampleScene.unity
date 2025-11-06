@@ -1094,8 +1094,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -308.24896, y: 0}
-  m_SizeDelta: {x: 1149.9504, y: 192}
+  m_AnchoredPosition: {x: -244.35284, y: 0}
+  m_SizeDelta: {x: 1013.5428, y: 192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &891434546
 MonoBehaviour:
@@ -1117,8 +1117,8 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 80}
-  m_Spacing: {x: 340, y: 0}
+  m_CellSize: {x: 400, y: 80}
+  m_Spacing: {x: 80, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!1 &973749786
@@ -1308,11 +1308,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd95fb01ccf7bd242bedf4907f65733b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PainelDoPlayer
-  nome: 
-  tipo: 
-  spritePlayer: 
   nomeDoPlayer: {fileID: 1027595179}
   spriteDoPlayer: {fileID: 691002892}
+  movimento1DoPlayer: {fileID: 1251523719}
+  movimento2DoPlayer: {fileID: 1661132944}
+  movimento3DoPlayer: {fileID: 116826649}
+  movimento4DoPlayer: {fileID: 1500825122}
 --- !u!1 &1027595177
 GameObject:
   m_ObjectHideFlags: 0
