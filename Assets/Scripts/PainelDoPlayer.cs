@@ -1,32 +1,20 @@
-// Fornece classes para serialização e desserialização de JSON (JsonSerializer, JsonDocument, etc.).
-// OBS: no Unity padrão, esse namespace não funciona, causa erro "namespace 'Json' não existe".
-// Para Unity, talvez usar Newtonsoft.Json ou JsonUtility.
-//using System.Text.Json;
 using Newtonsoft.Json;
 // Importa o namespace base do .NET, contém classes fundamentais como Console, Exception, etc.
 using System;
 using System.Collections;
-// Permite usar coleções genéricas, como List<T>, Dictionary<TKey, TValue>, etc.
-// No meu caso, é necessário para armazenar a lista de tipos do Pokémon.
-using System.Collections.Generic;
 using System.Linq;
-
 // Permite trabalhar com requisições HTTP, incluindo HttpClient, HttpRequestMessage, HttpResponseMessage.
 // Necessário para fazer a requisição à API do Pokémon.
 using System.Net.Http;
 // Contém tipos para programação assíncrona, incluindo Task e async/await.
 // Necessário para usar 'await client.GetStringAsync(...)'.
 using System.Threading.Tasks;
-// Permite usar membros estáticos da classe JSType diretamente, sem precisar escrever JSType.Membro.
-// No seu código de API Pokémon, **essa linha não é necessária** e provavelmente pode ser removida.
-//using static System.Runtime.InteropServices.JavaScript.JSType;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using static System.Net.WebRequestMethods;
-//using UnityEngine.UIElements;
+
+using Assets.Scripts;
 
 public class PainelDoPlayer : MonoBehaviour
 {
@@ -51,21 +39,32 @@ public class PainelDoPlayer : MonoBehaviour
     private string pp;
     public TextMeshProUGUI ppText;
 
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
-        
+        await CarregarPokemonAsync();
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private async Task CarregarPokemonAsync()
+    {
         using (HttpClient client = new HttpClient())
         {
             try
             {
                 // Número aleatório entre 1 e 1328 (total de pokemons)
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do player
-                int indexTeste = 500;
+                int indexTeste = 1000;
                 Debug.Log(indexPokemon);
 
-                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexTeste}");
+                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
                 //Pokemon p = JsonSerializer.Deserialize<Pokemon>(resposta)!;
                 // Para acessar o nome do pokemon
@@ -106,7 +105,7 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento2DoPlayer.text = movimento2; // Movimento em tipo text
                     Debug.Log($"Segundo movimento: {movimento2}");
                 }
-                
+
                 // Terceiro movimento
                 if (p.moves[2].move.name != null)
                 {
@@ -114,7 +113,7 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento3DoPlayer.text = movimento3; // Movimento em tipo text
                     Debug.Log($"Terceiro movimento: {movimento3}");
                 }
-                
+
                 // Quarto movimento
                 if (p.moves[3].move.name != null)
                 {
@@ -137,7 +136,7 @@ public class PainelDoPlayer : MonoBehaviour
 
                 // Pegando o pp do primeiro movimento
                 pp = MovimentoDetalhes.pp; // string do pp do player
-                ppText.text = pp; // pp do player em text
+                ppText.text = $"{pp}/{pp}"; // pp do player em text
                 Debug.Log(pp);
 
             }
@@ -146,12 +145,6 @@ public class PainelDoPlayer : MonoBehaviour
                 Debug.Log($"Temos um problema: {ex.Message}");
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     // Declaração de uma coroutine chamada BaixarImagem, que recebe uma string com a URL da imagem.
@@ -186,58 +179,4 @@ public class PainelDoPlayer : MonoBehaviour
 
     }
 
-}
-
-[System.Serializable]
-public class Pokemon
-{
-    public string name { get; set; }
-    public List<TypeSlot> types { get; set; }
-    public Sprites sprites { get; set; }
-    public List<MoveSlot> moves { get; set; }
-}
-
-// Sprites
-public class Sprites
-{
-    public string front_default { get; set; }
-    public string back_default { get; set; }
-}
-
-// Tipo do Player
-public class TypeSlot
-{
-    public TypeInfo type { get; set; }
-}
-
-// Nome do tipo do player
-public class TypeInfo
-{
-    public string name { get; set; }
-}
-
-// Abilidades do player
-public class MoveSlot
-{
-    public MoveInfo move { get; set; }
-}
-
-public class MoveInfo
-{
-    public string name {  set; get; }
-    public string url { set; get; }
-}
-
-// Tipo e pp do primeiro movimento do player
-public class MoveDetails
-{
-    public string name { get; set; }
-    public MoveType type { get; set; }
-    public string pp { get; set; }
-}
-
-public class MoveType
-{
-    public string name { get; set; }
-    public string url { get; set; }
 }
