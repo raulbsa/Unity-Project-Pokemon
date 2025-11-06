@@ -25,6 +25,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static System.Net.WebRequestMethods;
 //using UnityEngine.UIElements;
 
 public class PainelDoPlayer : MonoBehaviour
@@ -44,6 +45,12 @@ public class PainelDoPlayer : MonoBehaviour
     public TextMeshProUGUI movimento3DoPlayer;
     public TextMeshProUGUI movimento4DoPlayer;
 
+    private string urlDoPrimeiroMovimento;
+    private string tipoDoPrimeiroMovimento;
+    public TextMeshProUGUI tipoDoPrimeiroMovimentoText;
+    private string pp;
+    public TextMeshProUGUI ppText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
@@ -55,9 +62,10 @@ public class PainelDoPlayer : MonoBehaviour
             {
                 // Número aleatório entre 1 e 1328 (total de pokemons)
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do player
+                int indexTeste = 500;
                 Debug.Log(indexPokemon);
 
-                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
+                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexTeste}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
                 //Pokemon p = JsonSerializer.Deserialize<Pokemon>(resposta)!;
                 // Para acessar o nome do pokemon
@@ -66,19 +74,21 @@ public class PainelDoPlayer : MonoBehaviour
                 nomeDoPlayer.text = nome; // Nome do pokemon em text
                 Debug.Log(nomeDoPlayer.text);
 
-
-                // Para acessar o tipo do Pokemon
+                ///////////////////////////////////////////////////////////////////////////////////////////////
+                // Para acessar o tipo do Pokemon (Não será necessário para o projeto)
                 foreach (var t in p.types)
                 {
                     tipo = t.type.name; // string do tipo do player
                     Debug.Log(tipo);
                 }
 
+                ///////////////////////////////////////////////////////////////////////////////////////////////
                 // Para acessar a sprite do player
                 spritePlayer = p.sprites.back_default; // string da sprite do player
                 Debug.Log(spritePlayer);
                 StartCoroutine(BaixarImagem(spritePlayer));
 
+                ///////////////////////////////////////////////////////////////////////////////////////////////
                 // Para pegar apenas os primeiros 4 movimentos do pokemon se houver
                 var primeiros4 = p.moves.Take(4).ToList();
                 // Primeiro movimento
@@ -87,11 +97,6 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento1 = p.moves[0].move.name; // string do movimento
                     movimento1DoPlayer.text = movimento1; // Movimento em tipo text
                     Debug.Log($"Primeiro movimento: {movimento1}");
-                } else
-                {
-                    Debug.Log("Primeiro movimento nulo");
-                    movimento1 = "-"; // string do movimento
-                    movimento1DoPlayer.text = movimento1; // Movimento em tipo text
                 }
 
                 // Segundo movimento
@@ -101,12 +106,6 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento2DoPlayer.text = movimento2; // Movimento em tipo text
                     Debug.Log($"Segundo movimento: {movimento2}");
                 }
-                else
-                {
-                    Debug.Log("Segundo movimento nulo");
-                    movimento2 = "-"; // string do movimento
-                    movimento2DoPlayer.text = movimento2; // Movimento em tipo text
-                }
                 
                 // Terceiro movimento
                 if (p.moves[2].move.name != null)
@@ -114,12 +113,6 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento3 = p.moves[2].move.name; // string do movimento
                     movimento3DoPlayer.text = movimento3; // Movimento em tipo text
                     Debug.Log($"Terceiro movimento: {movimento3}");
-                }
-                else
-                {
-                    Debug.Log("Terceiro movimento nulo");
-                    movimento3 = "-"; // string do movimento
-                    movimento3DoPlayer.text = movimento3; // Movimento em tipo text
                 }
                 
                 // Quarto movimento
@@ -129,12 +122,23 @@ public class PainelDoPlayer : MonoBehaviour
                     movimento4DoPlayer.text = movimento4; // Movimento em tipo text
                     Debug.Log($"Quarto movimento: {movimento4}");
                 }
-                else
-                {
-                    Debug.Log("Quarto movimento nulo");
-                    movimento4 = "-"; // string do movimento
-                    movimento4DoPlayer.text = movimento4; // Movimento em tipo text
-                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////
+                // Acessando o tipo e o pp do primeiro movimento
+                urlDoPrimeiroMovimento = p.moves[0].move.url;
+                Debug.Log($"Tipo da url: {urlDoPrimeiroMovimento.GetType()}");
+                string respostaDoTipo = await client.GetStringAsync(urlDoPrimeiroMovimento);
+                MoveDetails MovimentoDetalhes = JsonConvert.DeserializeObject<MoveDetails>(respostaDoTipo);
+
+                // Pegando o tipo do primeiro movimento
+                tipoDoPrimeiroMovimento = MovimentoDetalhes.type.name; // string do tipo do player
+                tipoDoPrimeiroMovimentoText.text = tipoDoPrimeiroMovimento; // tipo do player em text
+                Debug.Log(tipoDoPrimeiroMovimento);
+
+                // Pegando o pp do primeiro movimento
+                pp = MovimentoDetalhes.pp; // string do pp do player
+                ppText.text = pp; // pp do player em text
+                Debug.Log(pp);
 
             }
             catch (Exception ex)
@@ -166,8 +170,8 @@ public class PainelDoPlayer : MonoBehaviour
         {
             // Extrai a textura da resposta da requisição. Essa textura representa a imagem que foi baixada.
             Texture2D textura = DownloadHandlerTexture.GetContent(request);
-            textura.filterMode = FilterMode.Point;
-            textura.Apply();
+            //textura.filterMode = FilterMode.Point;
+            //textura.Apply();
             // Cria um Sprite a partir da textura baixada.
             // Rect(0, 0, largura, altura) define a área da textura usada.
             // Vector2(0.5f, 0.5f) define o ponto central do sprite(pivot).
@@ -200,19 +204,19 @@ public class Sprites
     public string back_default { get; set; }
 }
 
-// Tipo do Pokemon
+// Tipo do Player
 public class TypeSlot
 {
     public TypeInfo type { get; set; }
 }
 
-// Nome do tipo do pokemon
+// Nome do tipo do player
 public class TypeInfo
 {
     public string name { get; set; }
 }
 
-// Abilidades do pokemon
+// Abilidades do player
 public class MoveSlot
 {
     public MoveInfo move { get; set; }
@@ -221,4 +225,19 @@ public class MoveSlot
 public class MoveInfo
 {
     public string name {  set; get; }
+    public string url { set; get; }
+}
+
+// Tipo e pp do primeiro movimento do player
+public class MoveDetails
+{
+    public string name { get; set; }
+    public MoveType type { get; set; }
+    public string pp { get; set; }
+}
+
+public class MoveType
+{
+    public string name { get; set; }
+    public string url { get; set; }
 }
