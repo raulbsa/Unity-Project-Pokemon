@@ -18,6 +18,7 @@ public class PainelDoInimigo : MonoBehaviour
     private string spritePlayer;
     public TextMeshProUGUI nomeDoInimigo;
     public Image spriteDoInimigo;
+    public TextMeshProUGUI LevelText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
@@ -47,6 +48,9 @@ public class PainelDoInimigo : MonoBehaviour
                 Debug.Log(nome);
                 nomeDoInimigo.text = nome.ToUpper(); // Nome do pokemon em text
                 Debug.Log(nomeDoInimigo.text);
+
+                int orderDoPlayer = p.order; // Level
+                LevelText.text = orderDoPlayer.ToString();
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////
                 // Para acessar a sprite do inimigo

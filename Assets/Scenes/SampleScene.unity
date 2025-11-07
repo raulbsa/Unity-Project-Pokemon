@@ -2429,7 +2429,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 79.2771, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &855878416
 MonoBehaviour:
@@ -5698,7 +5698,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 69.5428, y: 100}
+  m_SizeDelta: {x: 110, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1789546324
 MonoBehaviour:
@@ -5754,7 +5754,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6083,7 +6083,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 440.2515, y: 100}
+  m_SizeDelta: {x: 380, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889721430
 MonoBehaviour:
@@ -6448,6 +6448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PainelDoInimigo
   nomeDoInimigo: {fileID: 1889721430}
   spriteDoInimigo: {fileID: 550539011}
+  LevelText: {fileID: 1789546324}
 --- !u!1 &1969100094
 GameObject:
   m_ObjectHideFlags: 0
