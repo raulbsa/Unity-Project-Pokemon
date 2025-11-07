@@ -18,7 +18,7 @@ using Assets.Scripts;
 
 public class PainelDoPlayer : MonoBehaviour
 {
-    public TextMeshProUGUI nomeDoPlayer;
+    public TMP_Text nomeDoPlayer;
     public Image spriteDoPlayer;
     private int IdDoPlayer;
     private int Level;
@@ -94,13 +94,13 @@ public class PainelDoPlayer : MonoBehaviour
                 // Número aleatório entre 1 e 1328 (total de pokemons)
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do player
                 IdDoPlayer = indexPokemon;
-                int indexTeste = 1000;
+                int indexTeste = 321;
                 Debug.Log(indexPokemon);
 
                 string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
                 nomeDoPlayer.text = p.name.ToUpper();
-                StartCoroutine(BaixarImagem(p.sprites.back_default));
+                 StartCoroutine(BaixarImagem(p.sprites.back_default));
 
                 int orderDoPlayer = p.order; // Level
                 Level = orderDoPlayer;

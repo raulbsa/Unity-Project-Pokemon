@@ -39,10 +39,10 @@ public class PainelDoInimigo : MonoBehaviour
             try
             {
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do inimigo
-                int indexTeste = 25; // pikachu = 25
+                int indexTeste = 321; // pikachu = 25
                 Debug.Log(indexPokemon);
 
-                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexTeste}");
+                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
                 nome = p.name; // string do nome do inimigo
                 Debug.Log(nome);
@@ -74,8 +74,10 @@ public class PainelDoInimigo : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Texture2D textura = DownloadHandlerTexture.GetContent(request);
-            Sprite sprite = Sprite.Create(textura, new Rect(0, 0, textura.width, textura.height), new Vector2(0.5f, 0.5f));
+            textura.filterMode = FilterMode.Point;
+            Sprite sprite = Sprite.Create(textura, new Rect(0, 0, textura.width, textura.height), new Vector2(0.5f, 0.5f), 100f);
             spriteDoInimigo.sprite = sprite;
+            spriteDoInimigo.preserveAspect = true;
         }
         else
         {
