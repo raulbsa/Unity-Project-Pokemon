@@ -12,6 +12,8 @@ namespace Assets.Scripts
         public List<TypeSlot> types { get; set; }
         public Sprites sprites { get; set; }
         public List<MoveSlot> moves { get; set; }
+        public int order { get; set; }
+        public List<StatSlot> stats { get; set; }
     }
 
     // Sprites
@@ -45,7 +47,7 @@ namespace Assets.Scripts
         public string url { set; get; }
     }
 
-    // Tipo e pp do primeiro movimento do player
+    // Tipo e pp do movimento do player
     public class MoveDetails
     {
         public string name { get; set; }
@@ -57,6 +59,11 @@ namespace Assets.Scripts
     {
         public string name { get; set; }
         public string url { get; set; }
+    }
+
+    public class StatSlot
+    {
+        public string base_stat { get; set; }
     }
 
 }

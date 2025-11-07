@@ -18,39 +18,71 @@ using Assets.Scripts;
 
 public class PainelDoPlayer : MonoBehaviour
 {
-    private string nome;
-    private string tipo;
-    private string spritePlayer;
     public TextMeshProUGUI nomeDoPlayer;
     public Image spriteDoPlayer;
+    private int IdDoPlayer;
+    private int Level;
+    private int Base_Stat;
+    public TextMeshProUGUI HP;
+    public TextMeshProUGUI LevelText;
 
-    private string movimento1;
-    private string movimento2;
-    private string movimento3;
-    private string movimento4;
-    public TextMeshProUGUI movimento1DoPlayer;
-    public TextMeshProUGUI movimento2DoPlayer;
-    public TextMeshProUGUI movimento3DoPlayer;
-    public TextMeshProUGUI movimento4DoPlayer;
-
-    private string urlDoPrimeiroMovimento;
-    private string tipoDoPrimeiroMovimento;
-    public TextMeshProUGUI tipoDoPrimeiroMovimentoText;
-    private string pp;
+    public TextMeshProUGUI[] movimentosDoPlayer; // 0,1,2,3
+    public Image[] setas;
+    public TextMeshProUGUI tipoText;
     public TextMeshProUGUI ppText;
 
-    
+    [HideInInspector] public string[] nomesMovimentos = new string[4];
+    [HideInInspector] public string[] tiposMovimentos = new string[4];
+    [HideInInspector] public string[] ppsMovimentos = new string[4];
+    [HideInInspector] public int ultimoSelecionado = 0;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
         await CarregarPokemonAsync();
+        SelecionarMovimento(0);
+
+        if (IdDoPlayer <= 251)
+        {
+            int hp = HpGeracao1e2(Level, Base_Stat);
+            HP.text = $"{hp}/{hp}";
+        } else
+        {
+            int hp = HpGeracao3ouMais(Level, Base_Stat);
+            HP.text = $"{hp}/{hp}";
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SelecionarMovimento(int index)
+    {
+        if (index < 0 || index >= nomesMovimentos.Length) return;
+
+        ultimoSelecionado = index;
+
+        tipoText.text = tiposMovimentos[index];
+        ppText.text = ppsMovimentos[index];
+
+        for (int i = 0; i < setas.Length; i++)
+            setas[i].gameObject.SetActive(i == index);
+    }
+
+    public int HpGeracao1e2(int level, int base_stat)
+    {
+        int hp = (((base_stat * 2) * level) / 100) + level + 10;
+        return hp;
+    }
+
+    public int HpGeracao3ouMais(int level, int base_stat)
+    {
+        int hp = (((2 * base_stat * level) / 100) + level + 10);
+        return hp;
     }
 
     private async Task CarregarPokemonAsync()
@@ -61,83 +93,35 @@ public class PainelDoPlayer : MonoBehaviour
             {
                 // Número aleatório entre 1 e 1328 (total de pokemons)
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do player
+                IdDoPlayer = indexPokemon;
                 int indexTeste = 1000;
                 Debug.Log(indexPokemon);
 
                 string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
-                //Pokemon p = JsonSerializer.Deserialize<Pokemon>(resposta)!;
-                // Para acessar o nome do pokemon
-                nome = p.name; // string do nome do player
-                Debug.Log(nome);
-                nomeDoPlayer.text = nome; // Nome do pokemon em text
-                Debug.Log(nomeDoPlayer.text);
+                nomeDoPlayer.text = p.name.ToUpper();
+                StartCoroutine(BaixarImagem(p.sprites.back_default));
 
-                ///////////////////////////////////////////////////////////////////////////////////////////////
-                // Para acessar o tipo do Pokemon (Não será necessário para o projeto)
-                foreach (var t in p.types)
+                int orderDoPlayer = p.order; // Level
+                Level = orderDoPlayer;
+                LevelText.text = orderDoPlayer.ToString();
+
+                string base_statDoPlayer = p.stats[0].base_stat;
+                int base_statDoPlayerInt = int.Parse(base_statDoPlayer);
+                Base_Stat = base_statDoPlayerInt;
+
+                for (int i = 0; i < 4 && i < p.moves.Count; i++)
                 {
-                    tipo = t.type.name; // string do tipo do player
-                    Debug.Log(tipo);
+                    nomesMovimentos[i] = p.moves[i].move.name;
+                    movimentosDoPlayer[i].text = nomesMovimentos[i].ToUpper();
+
+                    string urlMovimento = p.moves[i].move.url;
+                    string respostaMove = await client.GetStringAsync(urlMovimento);
+                    MoveDetails detalhes = JsonConvert.DeserializeObject<MoveDetails>(respostaMove);
+
+                    tiposMovimentos[i] = detalhes.type.name.ToUpper();
+                    ppsMovimentos[i] = $"{detalhes.pp}/{detalhes.pp}";
                 }
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////
-                // Para acessar a sprite do player
-                spritePlayer = p.sprites.back_default; // string da sprite do player
-                Debug.Log(spritePlayer);
-                StartCoroutine(BaixarImagem(spritePlayer));
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////
-                // Para pegar apenas os primeiros 4 movimentos do pokemon se houver
-                var primeiros4 = p.moves.Take(4).ToList();
-                // Primeiro movimento
-                if (p.moves[0].move.name != null)
-                {
-                    movimento1 = p.moves[0].move.name; // string do movimento
-                    movimento1DoPlayer.text = movimento1; // Movimento em tipo text
-                    Debug.Log($"Primeiro movimento: {movimento1}");
-                }
-
-                // Segundo movimento
-                if (p.moves[1].move.name != null)
-                {
-                    movimento2 = p.moves[1].move.name; // string do movimento
-                    movimento2DoPlayer.text = movimento2; // Movimento em tipo text
-                    Debug.Log($"Segundo movimento: {movimento2}");
-                }
-
-                // Terceiro movimento
-                if (p.moves[2].move.name != null)
-                {
-                    movimento3 = p.moves[2].move.name; // string do movimento
-                    movimento3DoPlayer.text = movimento3; // Movimento em tipo text
-                    Debug.Log($"Terceiro movimento: {movimento3}");
-                }
-
-                // Quarto movimento
-                if (p.moves[3].move.name != null)
-                {
-                    movimento4 = p.moves[3].move.name; // string do movimento
-                    movimento4DoPlayer.text = movimento4; // Movimento em tipo text
-                    Debug.Log($"Quarto movimento: {movimento4}");
-                }
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////
-                // Acessando o tipo e o pp do primeiro movimento
-                urlDoPrimeiroMovimento = p.moves[0].move.url;
-                Debug.Log($"Tipo da url: {urlDoPrimeiroMovimento.GetType()}");
-                string respostaDoTipo = await client.GetStringAsync(urlDoPrimeiroMovimento);
-                MoveDetails MovimentoDetalhes = JsonConvert.DeserializeObject<MoveDetails>(respostaDoTipo);
-
-                // Pegando o tipo do primeiro movimento
-                tipoDoPrimeiroMovimento = MovimentoDetalhes.type.name; // string do tipo do player
-                tipoDoPrimeiroMovimentoText.text = tipoDoPrimeiroMovimento; // tipo do player em text
-                Debug.Log(tipoDoPrimeiroMovimento);
-
-                // Pegando o pp do primeiro movimento
-                pp = MovimentoDetalhes.pp; // string do pp do player
-                ppText.text = $"{pp}/{pp}"; // pp do player em text
-                Debug.Log(pp);
 
             }
             catch (Exception ex)

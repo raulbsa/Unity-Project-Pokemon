@@ -38,14 +38,14 @@ public class PainelDoInimigo : MonoBehaviour
             try
             {
                 int indexPokemon = UnityEngine.Random.Range(1, 1026); // int do ID do inimigo
-                int indexTeste = 1000;
+                int indexTeste = 25; // pikachu = 25
                 Debug.Log(indexPokemon);
 
-                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexPokemon}");
+                string resposta = await client.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{indexTeste}");
                 Pokemon p = JsonConvert.DeserializeObject<Pokemon>(resposta);
                 nome = p.name; // string do nome do inimigo
                 Debug.Log(nome);
-                nomeDoInimigo.text = nome; // Nome do pokemon em text
+                nomeDoInimigo.text = nome.ToUpper(); // Nome do pokemon em text
                 Debug.Log(nomeDoInimigo.text);
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////
