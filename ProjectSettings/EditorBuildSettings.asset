@@ -5,28 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela1.unity
     guid: 70c1ad010e54d914e9b9b0f8cb52d7a3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela2.unity
     guid: 9b986fca09d93ca469d02c02b64d95b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela3.unity
     guid: 2c626d4d9fb518b4c8ad5ae5285fdf77
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela4.unity
     guid: 2cd106c08d7bf0242967cc9b49f5ab28
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela5.unity
     guid: 429fbc5198b0328408134a85bc23bfac
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela6.unity
     guid: 23875c76b5a5ca644b1cca6ab7dacffb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TelaDeInicio.unity
     guid: 65d68b3a211779e41a85840a00688611
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TelaPrincipal.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
