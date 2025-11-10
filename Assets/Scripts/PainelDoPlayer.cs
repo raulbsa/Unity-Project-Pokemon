@@ -147,8 +147,8 @@ public class PainelDoPlayer : MonoBehaviour
         {
             // Extrai a textura da resposta da requisição. Essa textura representa a imagem que foi baixada.
             Texture2D textura = DownloadHandlerTexture.GetContent(request);
-            //textura.filterMode = FilterMode.Point;
-            //textura.Apply();
+            textura.filterMode = FilterMode.Point;
+            textura.Apply();
             // Cria um Sprite a partir da textura baixada.
             // Rect(0, 0, largura, altura) define a área da textura usada.
             // Vector2(0.5f, 0.5f) define o ponto central do sprite(pivot).
